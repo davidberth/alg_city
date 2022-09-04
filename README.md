@@ -19,5 +19,6 @@ centers, expanding that idea to 3D.
 
 ![](ideas/city_3d.jpg)
 
+---
 
 
