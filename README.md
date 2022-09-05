@@ -10,6 +10,7 @@ centers, expanding that idea to 3D.
 ---
 
 ### Inspiration list
+![](ideas/cube_white.jpg)
 
 ![](ideas/branching3d_1.jpg)
 
