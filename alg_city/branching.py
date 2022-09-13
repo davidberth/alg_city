@@ -3,16 +3,15 @@ import os
 import colorsys
 import numpy as np
 
-# TODO remove line segments from discs
-# TODO add local twisting
-# TODO create a list of line segments
-# TODO create a list of discs
+
+
 # TODO create street lights along line segments
 # TODO create street lights in discs
 
 # parameters
 inner_disc_radius = 0.13
 twist_angle = 0.19
+disc_mult = 0.07
 
 out_file = r'output\test1.png'
 pi2 = np.pi * 2.0
@@ -54,8 +53,9 @@ def branch(start, angle, angle_off, length, length_off, start_offset,  width,
 
     if num_branches > 3:
         end_radius = np.sqrt(end[0]**2 + end[1]**2)
-        end_offset = 0.05/(end_radius**0.3)
+        end_offset = disc_mult/(end_radius**0.3)
         ctx.arc(*end, end_offset, 0.0, pi2)
+        disc_list.append((end, end_offset))
     else:
         end_offset = 0.0
 
@@ -66,6 +66,8 @@ def branch(start, angle, angle_off, length, length_off, start_offset,  width,
         start[1] + np.sin(angle) * (local_length - end_offset)
     ctx.line_to(*line_end)
     ctx.stroke()
+
+    line_list.append((line_start, line_end, level))
 
     ang_inc = 0.25
 
@@ -88,5 +90,24 @@ for ang in np.arange(start_angle, pi2, 0.5):
     branch(origin, ang + rand(-0.1, 0.1),
            ang / 8.0, length, length * 0.38, inner_disc_radius, 0.01,
            hue, 0.3, 0.8, twist_angle * twist_factor)
+
+
+# street lights
+for line in line_list:
+    start, end, level = line
+    start = np.array(start)
+    end = np.array(end)
+    for l in np.arange(0, 1, 0.1):
+        coord = start * (1-l) + end * l
+        print (*coord)
+        ctx.set_source_rgb(1,1,1)
+        ctx.set_line_width(0.2)
+        ctx.arc(*coord, 0.4, 0.2, pi2)
+
+
+
+
+
+
 
 surface.write_to_png(out_file)
