@@ -15,7 +15,9 @@ size = (2048, 2048)
 inner_disc_radius = 0.13
 twist_angle = 0.19
 disc_mult = 0.07
-zoom = 1.0
+zoom = 0.5
+depth_low = 2.9
+depth_high = 6.1
 
 
 out_file = r'output\test1.png'
@@ -41,7 +43,7 @@ def rand(low, high):
 
 def branch(start, angle, angle_off, length, length_off, start_offset,  width,
            hue, saturation, value, twist, level=0):
-    if level > rand(1.9, 3.1):
+    if level > rand(depth_low, depth_high):
         return
     ctx.set_line_width(width)
     rgb = colorsys.hsv_to_rgb(hue, saturation, value)

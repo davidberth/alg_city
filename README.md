@@ -8,6 +8,9 @@ This is an algorithmic art project that generates 3D procedural cities
 using the primary branching technique that was used in population 
 centers, expanding that idea to 3D.
 ---
+### Progress
+
+![](progress/9_15.jpg)
 
 ### Inspiration list
 ![](ideas/cube_white.jpg)
