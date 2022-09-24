@@ -12,6 +12,8 @@ centers, expanding that idea to 3D.
 
 ![](progress/9_15.jpg)
 
+![](progress/9_15a.jpg)
+
 ### Inspiration list
 ![](ideas/cube_white.jpg)
 

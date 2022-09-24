@@ -1,11 +1,8 @@
 import cairo
-import os
 import colorsys
 import numpy as np
 
 np.random.seed(44444)
-
-
 
 # TODO create street lights along line segments
 # TODO create street lights in discs
@@ -98,35 +95,58 @@ for ang in np.arange(start_angle, pi2, 0.5):
            hue, 0.3, 0.8, twist_angle * twist_factor)
 
 
-# street lights
+qcoords = np.array(((-1, -1), (1, -1), (1, 1), (-1, 1)))
+
+# street lights and buildings
 for line in line_list:
     start, end, level = line
     start = np.array(start)
     end = np.array(end)
     diff = end - start
-    perp_dist_factor = 0.014 - (level * 0.0018)
+    perp_dist_factor = 0.017 - (level * 0.0018)
+    perp_dist_factor_building = perp_dist_factor * 2.0
 
     perpen = (-diff[1], diff[0]) / np.linalg.norm(diff)
 
     ctx.set_line_width(0.003)
     inc = 0.035 * (level + 1.2)
     inc = max(0.13, inc)
+
+    # street lights
     for l in np.arange(0, 1, inc):
         coord = start * (1.0-l) + end * l
         coordl = coord - perpen * perp_dist_factor
         coordr = coord + perpen * perp_dist_factor
 
-        ctx.set_source_rgb(float(level) * .25, 0.1, 0.0)
-
-
+        ctx.set_source_rgb(float(level) * .25, 0.9, 0.9)
         ctx.arc(*coordl, 0.003, 0.0, pi2)
         ctx.stroke()
-
         ctx.arc(*coordr, 0.003, 0.0, pi2)
         ctx.stroke()
 
+    # buildings
+    for l in np.arange(inc/2, 1, inc):
+        coord = start * (1.0 - l) + end * l
+        coordl = coord - perpen * perp_dist_factor_building
+        coordr = coord + perpen * perp_dist_factor_building
+        ctx.set_source_rgb(float(level) * .25, 0.1, 1.0)
 
-
+        for coord in [coordl, coordr]:
+            a = np.arctan2(diff[0], diff[1])
+            a+=rand(-0.2, 0.2)
+            sina = np.sin(a)
+            cosa = np.cos(a)
+            building_size = rand(0.007, 0.012)
+            kcoords = qcoords * building_size
+            rot = np.zeros((4,2))
+            rot[:, 0] = kcoords[:, 1] * sina + kcoords[:, 0] * cosa
+            rot[:, 1] = kcoords[:, 1] * cosa - kcoords[:, 0] * sina
+            kcoords = rot + coord
+            ctx.move_to(kcoords[0, 0], kcoords[0,1])
+            for cd in kcoords[1:, :]:
+                ctx.line_to(cd[0], cd[1])
+            ctx.line_to(kcoords[0, 0], kcoords[0,1])
+            ctx.stroke()
 
 
 
