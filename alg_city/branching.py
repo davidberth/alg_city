@@ -79,9 +79,9 @@ def branch(start, angle, angle_off, length, length_off, start_offset,  width,
 
     for angle_loc in np.arange(-ang_start, ang_start + 0.1, ang_inc):
         angle_ran = rand(-angle_off, angle_off)
-        branch(end, angle + angle_loc + angle_ran + twist, 0.15, local_length * .85,
-               local_length * .38, end_offset, width * .6, hue * .8,
-               saturation, value, twist, level + 1)
+        branch(end, angle + angle_loc + angle_ran + twist, 0.15,
+               local_length * .85, local_length * .38, end_offset,
+               width * .6, hue * .8, saturation, value, twist, level + 1)
 
 
 start_angle = rand(0.0, 0.3)
@@ -148,6 +148,7 @@ for line in line_list:
             ctx.line_to(kcoords[0, 0], kcoords[0,1])
             ctx.stroke()
 
+for disc in disc_list:
 
 
 surface.write_to_png(out_file)
